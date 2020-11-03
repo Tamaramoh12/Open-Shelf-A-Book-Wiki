@@ -2,7 +2,7 @@
 
 let express = require('express');
 let app = express();
-
+let PORT = process.env.PORT;
 require('dotenv').config();
 
 app.use(express.urlencoded({ extended: true }));
@@ -14,6 +14,6 @@ app.get('/hello', (request, response) => {
 });
 
 //port
-app.listen(3001 , () => {
-    console.log(`Listening to port 3001`);
+app.listen(PORT , () => {
+    console.log(`Listening to port ... ${PORT}`);
 });
