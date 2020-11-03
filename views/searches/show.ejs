@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <% key.forEach(element =>{ %>
+        <div>
+            <img src="<%= element.image %>" alt="">
+            <h2><%= element.title %></h2>
+            <h4><%= element.author %></h4>
+            <p><%= element.description %></p>
+        </div>
+    <% }); %>
+    
+
+</body>
+
+</html>
