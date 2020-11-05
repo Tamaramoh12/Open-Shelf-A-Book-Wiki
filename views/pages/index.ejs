@@ -8,6 +8,22 @@
 </head>
 <body>
     <h1>Welcome</h1>
+    <% x.forEach((value,index) =>{ %>
+        <div>
+            <img src="<%= value.image_url %>">
+            <h2>
+                <%= value.title %>
+            </h2>
+            <h3>
+                <%= value.author %>
+            </h3>
+            <p>
+                <%= value.descr %>
+            </p>
+        </div>
+    <% }); %>
+        <!-- display count -->
+    <h1><%= y %></h1>
 </body>
 </html>
 
