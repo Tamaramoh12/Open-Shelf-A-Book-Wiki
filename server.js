@@ -1,44 +1,48 @@
 'use strict';
-
+//Requires///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 let express = require('express');
 let app = express();
+
 let superagent = require('superagent');
+
 let pg = require('pg'); //postgresql
+
 let methodOverride = require('method-override');
 
 require('dotenv').config();
 let PORT = process.env.PORT;
 let DATABASE_URL = process.env.DATABASE_URL;
-let client = new pg.Client(DATABASE_URL); //client is a middle between postgresql and server.js
+let client = new pg.Client(DATABASE_URL); //client is a middleware between postgresql and server.js
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('./public'));
-// app.use('/public/styles',express.static(__dirname+'public/styles'));
+// app.use(express.static('./public'));
+app.use('/public', express.static('public'));
+
 app.set('view engine', 'ejs');
 
 app.use(methodOverride('_method'));
 
-//index
+//Index/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get('/',homepage);
 
 function homepage(request,response){
     let DB = `SELECT * FROM books;`;
     client.query(DB).then((data)=>{
         //to read the data
-        // console.log(data); 
-        // response.send(data); 
+        //1// console.log(data); 
+        //2// response.send(data); 
         //variable to save the rows from the data object
         let DBrow = data.rows;
         // response.send(DBrow); //test
-        
-        response.render('pages/index',{x:DBrow,
-        y:data.rowCount});
+        //display 
+        response.render('pages/index',{x:DBrow,y:data.rowCount}); 
     })
     .catch(error =>{
         console.log('error');
     })
 }
-//
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get('/books/:id',handleBooks);
 
 function handleBooks(request,response){
@@ -49,26 +53,12 @@ function handleBooks(request,response){
     });
 }
 
-//search form page
+//Search for a specefic book///////////////////////////////////////////////////////////////////////////////////////////////////
 app.get('/searches/new', (request, response) => {
     response.render('searches/new');
 });
 
-//
-app.put ('/books/:id', bookUpdate);
-
-function bookUpdate(req,res){
-    let recievedUpdate = req.body;
-    let statement = `UPDATE books SET title =$1, Author=$2, isbn=$3, image_url=$4, descr=$5  WHERE id=$6;`;
-    let values = [recievedUpdate.title, recievedUpdate.author, recievedUpdate.isbn, recievedUpdate.image_url, recievedUpdate.descr, recievedUpdate.id];
-    client.query(statement, values).then( data =>{
-      res.redirect(`/books/${recievedUpdate.id}`);
-      console.log('item updated ' + recievedUpdate.id);
-    }).catch((error) => {
-      console.log('error happend in the updated data...',error);
-    });
-  }
-  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.post('/searches', (request, response) => {
     let result = request.body;
 
@@ -88,7 +78,36 @@ app.post('/searches', (request, response) => {
     // response.send(result); //test
 });
 
-//
+//Update the book information/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+app.put ('/books/:id', bookUpdate);
+
+function bookUpdate(req,res){
+    let recievedUpdate = req.body;
+    let statement = `UPDATE books SET title =$1, Author=$2, isbn=$3, image_url=$4, descr=$5  WHERE id=$6;`;
+    let values = [recievedUpdate.title, recievedUpdate.author, recievedUpdate.isbn, recievedUpdate.image_url, recievedUpdate.descr, recievedUpdate.id];
+    client.query(statement, values).then( data =>{
+      res.redirect(`/books/${recievedUpdate.id}`);
+      console.log('item updated ' + recievedUpdate.id);
+    }).catch((error) => {
+      console.log('error happend in the updated data...',error);
+    });
+}
+
+//Delete specefic book///////////////////////////////////////////////////////////////////////////////////////////////
+app.delete('/books/:id',handleDeleteBook);
+
+function handleDeleteBook(request,response){
+    let dataFromForm = request.body.id;    //id from the books/show page
+    let statement =`DELETE FROM books WHERE id=${dataFromForm};`;
+    client.query(statement).then(data =>{
+        console.log('Deleted Successfully');
+        response.redirect('/');
+    }).catch((error) => {
+        console.log('error happend in the delete data...',error);
+      });
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.post ('/books', HandellBooks);
 
 function HandellBooks(req, res){
@@ -104,7 +123,7 @@ function HandellBooks(req, res){
   });
 }
 
-//
+//Constructor/////////////////////////////////////////////////////////////////////////////////////////////////////////
 function Book(bookObj) {
     this.title = bookObj.volumeInfo.title ?bookObj.volumeInfo.title : 'No title Found' ;
     this.author = bookObj.volumeInfo.authors ?bookObj.volumeInfo.authors :'No title authors' ;

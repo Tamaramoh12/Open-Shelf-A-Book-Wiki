@@ -20,10 +20,15 @@
             <p>
                 <%= value.descr %>
             </p>
+
+            <input id="detailsBtn" type="submit" value="Show Details" onclick="location.href = `/books/${<%= value.id %>}`;" ><br>
+
         </div>
     <% }); %>
         <!-- display count -->
     <h1><%= y %></h1>
+
+
 </body>
 </html>
 

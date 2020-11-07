@@ -7,8 +7,13 @@
 </head>
 <body>
     <%- include('detail') %>
-    <%- include('edit') %>
-
-    
+    <%- include('edit') %> 
+    <form action="/books/<%= x.id %>?_method=DELETE" method="POST">
+        <input type="hidden" value="<%= x.id %>" name="id">
+        <input type="submit" value="Delete">
+    </form>
+    <button id="updatebutton">Update Book</button>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../../../public/app.js"></script>
 </body>
 </html>
