@@ -1,19 +1,21 @@
-<form  action="/books/<%= x.id %>?_method=PUT" method="POST">
+<div id="deleteFromMain" style="display: none;">
+    <form action="/books/<%= x.id %>?_method=PUT" method="POST">
 
-    <div class="form_div">
-        <input type="hidden" id="id" name="id" value="<%=  x.id %>"><br><br>
-        <label for="title">Book Title:</label><br>
-        <input type="text" id="title" name="title" value="<%=  x.title %>"><br><br>
-        <label for="author">Book author:</label><br>
-        <input type="text" id="author" name="author" value="<%=  x.author %>"><br><br>
-        <label for="isbn">Book isbn:</label><br>
-        <input type="text" id="isbn" name="isbn" value="<%=  x.isbn %>"><br><br>
-        <label for="image_url">Book Img:</label><br>
-        <input type="text" id="image_url" name="image_url" value="<%= x.image_url %>"><br><br>
-        <label for="descr">Book description:</label><br>
-        <textarea id="descr" name="descr" rows="4" cols="50">
+        <div class="form_div">
+            <input type="hidden" id="id" name="id" value="<%=  x.id %>"><br><br>
+            <label for="title">Book Title:</label><br>
+            <input type="text" id="title" name="title" value="<%=  x.title %>"><br><br>
+            <label for="author">Book author:</label><br>
+            <input type="text" id="author" name="author" value="<%=  x.author %>"><br><br>
+            <label for="isbn">Book isbn:</label><br>
+            <input type="text" id="isbn" name="isbn" value="<%=  x.isbn %>"><br><br>
+            <label for="image_url">Book Img:</label><br>
+            <input type="text" id="image_url" name="image_url" value="<%= x.image_url %>"><br><br>
+            <label for="descr">Book description:</label><br>
+            <textarea id="descr" name="descr" rows="4" cols="50">
               <%= x.descr %>
               </textarea><br><br>
-    </div>
-    <input type="submit" value="Edit Collection">
-</form>
+        </div>
+        <input type="submit" value="Edit Collection">
+    </form>
+</div>
